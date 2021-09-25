@@ -4,7 +4,8 @@ export const ACTIONS = {
     LOAD_HOLIDAYS: 'LOAD_HOLIDAYS',
     SELECT_HOLIDAY: 'SELECT_HOLIDAY',
     SET_YEARS: 'SET_YEARS',
-    SELECT_YEAR: 'SELECT_YEAR'
+    SELECT_YEAR: 'SELECT_YEAR',
+    SET_EVENTS_BY_YEAR: 'SET_EVENTS_BY_YEAR'
 };
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   selectedHoliday: {},
   loading: false,
   years: [],
+  eventsByYear: null,
   selectedYear: null
 };
 
@@ -42,6 +44,12 @@ function rootReducer(state = initialState, action) {
             return {
               ...state,
               year: action.payload,
+            };
+          }
+        case ACTIONS.SET_EVENTS_BY_YEAR: {
+            return {
+              ...state,
+              eventsByYear: action.payload,
             };
           }
         default:

@@ -15,9 +15,14 @@ function useLoadData() {
       .get("https://www.gov.uk/bank-holidays.json")
       .then((res) => {
         const data = res.data;
+        
+        dispatch({
+          type: ACTIONS.LOAD_HOLIDAYS,
+          payload: res.data,
+        });
+
         const eventsByYear = {};
         let years = [];
-        console.log(Object.keys(data))
         Object.keys(data).forEach(key => {
           const division = data[key];
           const events = division.events;
@@ -30,15 +35,17 @@ function useLoadData() {
         });
         years = [...new Set(years)];
         years = years.map(year => ({ value: year, label: year }))
+
         dispatch({
           type: ACTIONS.SET_YEARS,
           payload: years
         })
 
         dispatch({
-          type: ACTIONS.LOAD_HOLIDAYS,
-          payload: res.data,
+          type: ACTIONS.SET_EVENTS_BY_YEAR,
+          payload: eventsByYear,
         });
+        
         setAPIStatus("success");
       })
       .catch((error) => {
