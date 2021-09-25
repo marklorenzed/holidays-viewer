@@ -2,7 +2,7 @@ import { Grid } from '@mui/material'
 import React from 'react'
 import Card from '../../components/Card'
 
-export default function ErrorPAge() {
+export default function ErrorPage({message}) {
     return (
         <Grid
           container
@@ -18,7 +18,7 @@ export default function ErrorPAge() {
             }}
           >
             <Card>
-              Error Loading Page
+              {message}
             </Card>
           </Grid>
         </Grid>

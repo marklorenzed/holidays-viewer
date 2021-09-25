@@ -63,7 +63,7 @@ export default function Main() {
           </Grid>
         </Grid>
       ) : (
-        <ErrorPage />
+        <ErrorPage message={"Error loading Data"}/>
       )}
     </Box>
   );
