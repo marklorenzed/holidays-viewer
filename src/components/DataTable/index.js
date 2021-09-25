@@ -7,15 +7,23 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Checkbox } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { ACTIONS } from "../../redux";
+import { createHolidayID } from "../../utils";
 
 export default function DataTable({ rows, headers }) {
-  const [selected, setSelected] = React.useState([]);
-  const getName = (index) => `name_${index}`;
+  const selected = useSelector(state => state.selectedHolidays)
+  const dispatch = useDispatch();
+
+  const setSelected = (data) => {
+    dispatch({ type: ACTIONS.SELECT_HOLIDAYS, payload: data })
+  }
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n, index) => getName(index));
+      const newSelecteds = rows.map((n) => createHolidayID(n));
       setSelected(newSelecteds);
       return;
     }
@@ -65,14 +73,14 @@ export default function DataTable({ rows, headers }) {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => {
-            const name = getName(index)
-            const isItemSelected = isSelected(name);
+            const id = createHolidayID(row)
+            const isItemSelected = isSelected(id);
             const labelId = `enhanced-table-checkbox-${index}`;
             return (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={(event) => handleClick(event, name)}
+                onClick={(event) => handleClick(event, id)}
               >
                 <TableCell padding="checkbox">
                   <Checkbox

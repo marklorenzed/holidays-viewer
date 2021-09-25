@@ -2,15 +2,16 @@ import { createStore } from "redux";
 
 export const ACTIONS = {
     LOAD_HOLIDAYS: 'LOAD_HOLIDAYS',
-    SELECT_HOLIDAY: 'SELECT_HOLIDAY',
+    SELECT_HOLIDAYS: 'SELECT_HOLIDAYS',
     SET_YEARS: 'SET_YEARS',
     SELECT_YEAR: 'SELECT_YEAR',
-    SET_EVENTS_BY_YEAR: 'SET_EVENTS_BY_YEAR'
+    SET_EVENTS_BY_YEAR: 'SET_EVENTS_BY_YEAR',
+    SET_EVENTS_BY_ID: 'SET_EVENTS_BY_ID'
 };
 
 const initialState = {
   holidays: {},
-  selectedHoliday: {},
+  selectedHolidays: [],
   loading: false,
   years: [],
   eventsByYear: null,
@@ -43,6 +44,7 @@ function rootReducer(state = initialState, action) {
         case ACTIONS.SELECT_YEAR: {
             return {
               ...state,
+              selectedHolidays: [],
               year: action.payload,
             };
           }
@@ -50,6 +52,18 @@ function rootReducer(state = initialState, action) {
             return {
               ...state,
               eventsByYear: action.payload,
+            };
+          }
+        case ACTIONS.SELECT_HOLIDAYS: {
+            return {
+              ...state,
+              selectedHolidays: action.payload,
+            };
+          }
+        case ACTIONS.SET_EVENTS_BY_ID: {
+            return {
+              ...state,
+              eventsById: action.payload,
             };
           }
         default:

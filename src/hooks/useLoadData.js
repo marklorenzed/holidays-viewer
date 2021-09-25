@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { keyframes } from 'styled-components';
 import { ACTIONS } from '../redux';
+import { createHolidayID } from '../utils';
 
 
 function useLoadData() {
@@ -22,6 +22,7 @@ function useLoadData() {
         });
 
         const eventsByYear = {};
+        const eventsById = {};
         let years = [];
         Object.keys(data).forEach(key => {
           const division = data[key];
@@ -29,8 +30,13 @@ function useLoadData() {
           events.forEach(event => {
             const year = (new Date(event.date)).getFullYear();
             years.push(year);
-            if (eventsByYear[year]) eventsByYear[year].push(event);
-            else eventsByYear[year] = [event];
+            const obj = {...event, division: division.division}
+
+            const id = createHolidayID(obj);
+            eventsById[id] = obj;
+
+            if (eventsByYear[year]) eventsByYear[year].push(obj);
+            else eventsByYear[year] = [obj];
           });
         });
         years = [...new Set(years)];
@@ -44,6 +50,11 @@ function useLoadData() {
         dispatch({
           type: ACTIONS.SET_EVENTS_BY_YEAR,
           payload: eventsByYear,
+        });
+
+        dispatch({
+          type: ACTIONS.SET_EVENTS_BY_ID,
+          payload: eventsById,
         });
         
         setAPIStatus("success");
